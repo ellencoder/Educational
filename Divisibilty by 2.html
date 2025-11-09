@@ -1,0 +1,116 @@
+import React, { useState } from 'react';
+import { Check, X, Sparkles } from 'lucide-react';
+
+export default function DivisibilityBy2() {
+  const [currentNumber, setCurrentNumber] = useState(generateNumber());
+  const [score, setScore] = useState(0);
+  const [attempts, setAttempts] = useState(0);
+  const [feedback, setFeedback] = useState('');
+  const [showRule, setShowRule] = useState(true);
+
+  function generateNumber() {
+    return Math.floor(Math.random() * 100) + 1;
+  }
+
+  function handleAnswer(answer) {
+    const isDivisibleBy2 = currentNumber % 2 === 0;
+    const isCorrect = answer === isDivisibleBy2;
+    
+    setAttempts(attempts + 1);
+    
+    if (isCorrect) {
+      setScore(score + 1);
+      setFeedback(`🎉 Correct! ${currentNumber} ${isDivisibleBy2 ? 'IS' : 'is NOT'} divisible by 2!`);
+    } else {
+      setFeedback(`❌ Not quite! ${currentNumber} ${isDivisibleBy2 ? 'IS' : 'is NOT'} divisible by 2. The last digit is ${currentNumber % 10}.`);
+    }
+    
+    setTimeout(() => {
+      setCurrentNumber(generateNumber());
+      setFeedback('');
+    }, 2000);
+  }
+
+  const lastDigit = currentNumber % 10;
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-purple-400 via-pink-400 to-blue-400 p-8">
+      <div className="max-w-2xl mx-auto">
+        <div className="bg-white rounded-3xl shadow-2xl p-8 mb-6">
+          <div className="flex items-center justify-center mb-6">
+            <Sparkles className="text-yellow-500 w-8 h-8 mr-2" />
+            <h1 className="text-4xl font-bold text-center text-purple-600">
+              Divisibility by 2
+            </h1>
+            <Sparkles className="text-yellow-500 w-8 h-8 ml-2" />
+          </div>
+          
+          <div className="bg-yellow-50 border-4 border-yellow-300 rounded-2xl p-6 mb-6">
+            <button 
+              onClick={() => setShowRule(!showRule)}
+              className="text-2xl font-bold text-yellow-800 mb-2 w-full text-left flex items-center justify-between"
+            >
+              <span>🔑 The Secret Rule!</span>
+              <span className="text-lg">{showRule ? '▼' : '▶'}</span>
+            </button>
+            {showRule && (
+              <div className="text-lg text-yellow-900 space-y-2">
+                <p className="font-semibold">A number is divisible by 2 if its LAST DIGIT is even!</p>
+                <p className="text-base">Even digits: 0, 2, 4, 6, 8</p>
+                <p className="text-base italic">Example: 24 → last digit is 4 (even) → divisible by 2! ✓</p>
+                <p className="text-base italic">Example: 37 → last digit is 7 (odd) → NOT divisible by 2! ✗</p>
+              </div>
+            )}
+          </div>
+
+          <div className="bg-gradient-to-r from-blue-100 to-purple-100 rounded-2xl p-6 mb-6 text-center">
+            <p className="text-xl text-gray-700 mb-4">Is this number divisible by 2?</p>
+            <div className="text-8xl font-bold text-purple-600 mb-4 animate-pulse">
+              {currentNumber}
+            </div>
+            <div className="text-lg text-gray-600 mb-4">
+              Last digit: <span className="text-3xl font-bold text-pink-600">{lastDigit}</span>
+            </div>
+          </div>
+
+          {feedback ? (
+            <div className={`text-center text-2xl font-bold p-6 rounded-2xl mb-6 ${
+              feedback.includes('Correct') ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+            }`}>
+              {feedback}
+            </div>
+          ) : (
+            <div className="flex gap-4 justify-center mb-6">
+              <button
+                onClick={() => handleAnswer(true)}
+                className="bg-green-500 hover:bg-green-600 text-white font-bold text-2xl py-6 px-12 rounded-2xl shadow-lg transform transition hover:scale-105 flex items-center gap-3"
+              >
+                <Check className="w-8 h-8" />
+                YES
+              </button>
+              <button
+                onClick={() => handleAnswer(false)}
+                className="bg-red-500 hover:bg-red-600 text-white font-bold text-2xl py-6 px-12 rounded-2xl shadow-lg transform transition hover:scale-105 flex items-center gap-3"
+              >
+                <X className="w-8 h-8" />
+                NO
+              </button>
+            </div>
+          )}
+
+          <div className="bg-purple-50 rounded-2xl p-6 text-center">
+            <p className="text-2xl font-bold text-purple-700">
+              Score: {score} / {attempts}
+            </p>
+            {attempts > 0 && (
+              <p className="text-lg text-purple-600 mt-2">
+                {Math.round((score / attempts) * 100)}% correct! 
+                {(score / attempts) >= 0.8 ? ' 🌟 Amazing!' : (score / attempts) >= 0.6 ? ' 👍 Good job!' : ' 💪 Keep practicing!'}
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
