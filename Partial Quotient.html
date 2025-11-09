@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Partial Quotients</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 24px;
+            color: rgba(0, 0, 0, 0.87);
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .main-card {
+            background: #FFFFFC;
+            border-radius: 8px;
+            padding: 32px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1), 0 8px 16px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+        }
+        
+        h1 {
+            color: #667eea;
+            margin-bottom: 8px;
+            font-size: 2.5em;
+            font-weight: 500;
+            letter-spacing: -0.5px;
+        }
+        
+        .subtitle {
+            color: rgba(0, 0, 0, 0.6);
+            margin-bottom: 32px;
+            font-size: 1.1em;
+            font-weight: 400;
+        }
+        
+        .section {
+            background: #FFFFFC;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.12), 0 16px 24px rgba(0,0,0,0.14);
+        }
+        
+        .instruction {
+            background: #FFF4E6;
+            padding: 16px;
+            border-radius: 4px;
+            margin-bottom: 24px;
+            border-left: 4px solid #FFB84D;
+            font-size: 1em;
+            line-height: 1.6;
+            color: rgba(0, 0, 0, 0.87);
+        }
+        
+        .problem-setup {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+            justify-content: center;
+            margin: 24px 0;
+            flex-wrap: wrap;
+        }
+        
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .input-group label {
+            font-weight: 500;
+            margin-bottom: 8px;
+            font-size: 0.875em;
+            color: #667eea;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .input-group input {
+            width: 120px;
+            padding: 12px;
+            font-size: 1.5em;
+            border: none;
+            border-bottom: 2px solid #667eea;
+            background: transparent;
+            text-align: center;
+            font-family: 'Roboto', sans-serif;
+            transition: border-color 0.2s;
+        }
+        
+        .input-group input:focus {
+            outline: none;
+            border-bottom-color: #764ba2;
+        }
+        
+        .big-division {
+            font-size: 2em;
+            font-weight: 300;
+            color: #667eea;
+        }
+        
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1em;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            margin: 8px;
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        button:hover {
+            background: #764ba2;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        
+        button:active {
+            box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+            transform: translateY(1px);
+        }
+        
+        button:disabled {
+            background: rgba(0, 0, 0, 0.12);
+            color: rgba(0, 0, 0, 0.26);
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        
+        .preset-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+        
+        .preset-btn {
+            background: #9F7AEA;
+            color: white;
+        }
+        
+        .preset-btn:hover {
+            background: #805AD5;
+        }
+        
+        .visualization-container {
+            margin: 32px 0;
+            display: none;
+        }
+        
+        .visualization-container.show {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        h2 {
+            color: #667eea;
+            font-weight: 500;
+            font-size: 1.5em;
+            margin-bottom: 24px;
+        }
+        
+        .division-bracket {
+            display: inline-flex;
+            flex-direction: row;
+            align-items: flex-start;
+            background: white;
+            padding: 32px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            min-width: 450px;
+        }
+        
+        .bracket-header {
+            display: flex;
+            align-items: flex-start;
+            position: relative;
+        }
+        
+        .divisor {
+            font-size: 2em;
+            font-weight: 500;
+            color: #667eea;
+            margin-right: 8px;
+            margin-top: 18px
+        }
+        
+        .bracket-symbol {
+            font-size: 3em;
+            color: #667eea;
+            line-height: 0.8;
+            margin-right: 8px;
+        }
+        
+        .dividend {
+            font-size: 2em;
+            font-weight: 500;
+            color: #764ba2;
+            padding-top: 8px;
+            border-bottom: 3px solid #667eea;
+            width: 140px;
+            text-align: center;
+            border: 3px solid black;
+            border-bottom: none;
+
+        }
+        
+        .dividend-offset {
+            margin-left: 64px;
+        }
+        
+        .work-area-wrapper {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            margin-left: 16px;
+            padding-top: 8px;
+        }
+        
+        .quotient-display.show {
+            opacity: 1;
+        }
+        
+        .subtraction-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 10px;
+            background: #F7FAFC;
+            border-radius: 4px;
+            border-left: 4px solid transparent;
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: all 0.3s ease-out;
+        }
+        
+        .subtraction-row.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .subtraction-row.highlight {
+            border-left-color: #FFB84D;
+            background: #FFF4E6;
+        }
+        
+        .left-side {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .minus-sign {
+            font-size: 1.5em;
+            width: 15px;
+            color: #E53E3E;
+            font-weight: bold;
+        }
+        
+        .product {
+            font-size: 1.3em;
+            font-weight: 500;
+            color: #667eea;
+            width: 95px;
+            border-right: 3px solid black;
+            padding: 8px 0;
+        }
+        
+        .calculation {
+            font-size: 0.9em;
+            color: rgba(0, 0, 0, 0.6);
+            font-style: italic;
+        }
+        
+        .partial-quotient {
+            font-size: 1.2em;
+            font-weight: 500;
+            color: #48BB78;
+            background: #E6FFFA;
+            padding: 4px 12px;
+            border-radius: 4px;
+        }
+        
+        .remainder-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 12px;
+            border-top: 3px solid #667eea;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .remainder-row::before {
+            content: '';
+            display: inline-block;
+            width: 125px;
+            height: 36px;
+            border-right: 3px solid black;
+        }
+        
+        .remainder-row.show {
+            opacity: 1;
+        }
+        
+        .remainder-value {
+            font-size: 1.5em;
+            font-weight: 500;
+            color: #764ba2;
+        }
+        
+        .sum-box {
+            border-top: 3px double #667eea;
+            padding-top: 16px;
+            margin-top: 16px;
+            text-align: right;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .sum-box.show {
+            opacity: 1;
+        }
+        
+        .sum-label {
+            font-size: 1em;
+            color: rgba(0, 0, 0, 0.6);
+            margin-bottom: 8px;
+        }
+        
+        .sum-calculation {
+            font-size: 1.2em;
+            color: #48BB78;
+            margin-bottom: 8px;
+        }
+        
+        .sum-result {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #48BB78;
+        }
+        
+        .steps-container {
+            margin-top: 32px;
+        }
+        
+        .current-step {
+            margin: 24px 0;
+            padding: 24px;
+            background: #FFFFFC;
+            border-radius: 4px;
+            border-left: 4px solid #667eea;
+            min-height: 100px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+        }
+        
+        .current-step .step-cofntent {
+            opacity: 0;
+            transform: translateX(-8px);
+            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+        }
+        
+        .current-step.show .step-content {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #667eea;
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            margin-right: 12px;
+            font-weight: 500;
+            font-size: 1em;
+        }
+        
+        .step-text {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: rgba(0, 0, 0, 0.87);
+        }
+        
+        .navigation-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 24px;
+        }
+        
+        .progress-indicator {
+            text-align: center;
+            color: #667eea;
+            font-weight: 500;
+            margin-top: 16px;
+            font-size: 0.875em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .final-answer {
+            background: #E6FFFA;
+            padding: 24px;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 1.8em;
+            font-weight: 500;
+            color: #48BB78;
+            margin-top: 24px;
+            border-left: 4px solid #48BB78;
+            display: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .final-answer.show {
+            display: block;
+            animation: slideUp 0.3s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .center-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="main-card">
+            <h1>Partial Quotients Division 📊</h1>
+            <p class="subtitle">Break down division into easier steps by subtracting partial quotients 🎯</p>
+            
+            <div class="instruction">
+                <strong>What is Partial Quotients? 🤔</strong><br>
+                Partial Quotients is a division strategy where we subtract groups of the divisor from the dividend until we can't subtract anymore! 🧮 We keep track of how many groups we subtract (these are our partial quotients), then add them up to get the final answer! It's like taking bites out of a big number until it's all gone! 🍰
+            </div>
+            
+            <div class="problem-setup">
+                <div class="input-group">
+                    <label>Dividend</label>
+                    <input type="number" id="dividend" value="156" min="10" max="3500">
+                </div>
+                <div class="big-division">÷</div>
+                <div class="input-group">
+                    <label>Divisor</label>
+                    <input type="number" id="divisor" value="12" min="2" max="100">
+                </div>
+            </div>
+            
+            <div style="text-align: center;">
+                <button onclick="startProblem()">Start Learning 🚀</button>
+                <button onclick="reset()" style="background: #E53E3E;">Reset 🔄</button>
+            </div>
+            
+            <div class="preset-buttons">
+                <button class="preset-btn" onclick="loadProblem(156, 12)">156 ÷ 12</button>
+                <button class="preset-btn" onclick="loadProblem(336, 16)">336 ÷ 16</button>
+                <button class="preset-btn" onclick="loadProblem(168, 14)">168 ÷ 14</button>
+                <button class="preset-btn" onclick="loadProblem(225, 15)">225 ÷ 15</button>
+            </div>
+        </div>
+        
+        <div id="visualization" class="visualization-container">
+            <div class="section">
+                <h2>Let's Solve It Step by Step! 🔍</h2>
+                
+                <div class="center-content">
+                    <div class="division-bracket">
+                        <span class="divisor" id="divisorDisplay"></span>
+                        <div class="work-area-wrapper">
+                            <div class="bracket-header">
+                                <span class="dividend" id="dividendDisplay"></span>
+                            </div>
+                            <div class="work-area" id="workArea"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="final-answer" id="finalAnswer"></div>
+                </div>
+                
+                <div class="steps-container">
+                    <div class="current-step show" id="currentStep">
+                        <div class="step-content" id="stepContent">
+                            <span class="step-number" id="stepNumber">1</span>
+                            <span class="step-text" id="stepText"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="navigation-buttons">
+                        <button id="prevBtn" onclick="previousStep()" disabled>Previous ⬅️</button>
+                        <button id="nextBtn" onclick="nextStep()">Next ➡️</button>
+                    </div>
+                    
+                    <div class="progress-indicator" id="progress"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let currentStepIndex = 0;
+        let steps = [];
+        let problemData = {};
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const dividendInput = document.getElementById('dividend');
+            const divisorInput = document.getElementById('divisor');
+
+            dividendInput.addEventListener('input', () => {
+                const max = parseInt(dividendInput.max, 10);
+                if (parseInt(dividendInput.value, 10) > max) {
+                    dividendInput.value = max;
+                }
+            });
+
+            divisorInput.addEventListener('input', () => {
+                const max = parseInt(divisorInput.max, 10);
+                if (parseInt(divisorInput.value, 10) > max) {
+                    divisorInput.value = max;
+                }
+            });
+        });
+
+        function loadProblem(dividend, divisor) {
+            document.getElementById('dividend').value = dividend;
+            document.getElementById('divisor').value = divisor;
+            startProblem();
+        }
+        
+        function calculatePartialQuotients(dividend, divisor) {
+            const partials = [];
+            let remaining = dividend;
+            
+            // Strategy: Use "friendly" multiples (100, 90...10, 5, 2, 1)
+            const multipliers = [100, 90, 80, 70, 60, 50, 40, 30, 20, 10, 5, 2, 1];
+            
+            for (const mult of multipliers) {
+                while (remaining >= divisor * mult) {
+                    partials.push({
+                        quotient: mult,
+                        product: divisor * mult
+                    });
+                    remaining -= divisor * mult;
+                }
+            }
+            
+            return { partials, remainder: remaining };
+        }
+        
+        function startProblem() {
+            const dividend = parseInt(document.getElementById('dividend').value);
+            const divisor = parseInt(document.getElementById('divisor').value);
+            
+            if (isNaN(dividend) || isNaN(divisor) || dividend <= 0 || divisor <= 0) {
+                alert('Please enter valid positive numbers! 🔢');
+                return;
+            }
+            
+            if (divisor === 0) {
+                alert('Cannot divide by zero! ⚠️');
+                return;
+            }
+            
+            if (dividend < divisor) {
+                alert('The dividend should be larger than the divisor for this lesson! 📚');
+                return;
+            }
+            
+            const { partials, remainder } = calculatePartialQuotients(dividend, divisor);
+            
+            problemData = { dividend, divisor, partials, remainder };
+            currentStepIndex = 0;
+            
+            document.getElementById('divisorDisplay').textContent = divisor;
+            document.getElementById('dividendDisplay').textContent = dividend;
+            document.getElementById('workArea').innerHTML = '';
+            document.getElementById('finalAnswer').classList.remove('show');
+            
+            createSteps();
+            
+            document.getElementById('visualization').classList.add('show');
+            showStep(0);
+        }
+        
+        function createSteps() {
+            const { dividend, divisor, partials, remainder } = problemData;
+            steps = [];
+            
+            steps.push({
+                text: `Welcome! 👋 Let's solve ${dividend} ÷ ${divisor} using Partial Quotients! We'll subtract groups of ${divisor} from ${dividend} until we can't subtract anymore. Ready? 🎉`,
+                action: () => {}
+            });
+            
+            steps.push({
+                text: `First, we set up our division bracket. ${divisor} (our divisor) goes outside, and ${dividend} (our dividend) goes inside. 📝 Now we're ready to start subtracting!`,
+                action: () => {}
+            });
+            
+            let currentRemaining = dividend;
+            let quotientParts = [];
+            
+            partials.forEach((partial, index) => {
+                const newRemaining = currentRemaining - partial.product;
+                quotientParts.push(partial.quotient);
+                
+                // Describe the thinking
+                if (partial.quotient >= 10) {
+                    steps.push({
+                        text: `🤔 Let's think big! Can we subtract ${partial.quotient} groups of ${divisor}? That would be ${divisor} × ${partial.quotient} = ${partial.product}. Yes! ${currentRemaining} - ${partial.product} = ${newRemaining}. We can do it! 💪`,
+                        action: () => {}
+                    });
+                } else if (partial.quotient === 5) {
+                    steps.push({
+                        text: `🤔 How about 5 groups of ${divisor}? That's ${divisor} × 5 = ${partial.product}. Great! ${currentRemaining} - ${partial.product} = ${newRemaining}. Perfect! ✨`,
+                        action: () => {}
+                    });
+                } else if (partial.quotient === 2) {
+                    steps.push({
+                        text: `🤔 We can still subtract 2 groups of ${divisor}! That's ${divisor} × 2 = ${partial.product}. Let's do it! ${currentRemaining} - ${partial.product} = ${newRemaining}. 👍`,
+                        action: () => {}
+                    });
+                } else {
+                    steps.push({
+                        text: `🤔 We have ${currentRemaining} left. We can subtract 1 more group of ${divisor}! ${currentRemaining} - ${divisor} = ${newRemaining}. One more down! 🎯`,
+                        action: () => {}
+                    });
+                }
+                
+                // Show the subtraction
+                steps.push({
+                    text: `Let's write it down! ✍️ We subtract ${partial.product} (which is ${partial.quotient} groups of ${divisor}) and write our partial quotient of ${partial.quotient} on the right side.`,
+                    action: () => {
+                        const workArea = document.getElementById('workArea');
+                        const row = document.createElement('div');
+                        row.className = 'subtraction-row';
+                        row.id = `row${index}`;
+                        row.innerHTML = `
+                            <div class="left-side">
+                                <span class="minus-sign">−</span>
+                                <span class="product">${partial.product}</span>
+                                <span class="calculation">(${divisor} × ${partial.quotient})</span>
+                            </div>
+                            <div class="partial-quotient">${partial.quotient}</div>
+                        `;
+                        workArea.appendChild(row);
+                        
+                        setTimeout(() => {
+                            row.classList.add('show');
+                            row.classList.add('highlight');
+                            setTimeout(() => row.classList.remove('highlight'), 1000);
+                        }, 100);
+                    }
+                });
+                
+                // Show the new remainder
+                if (index < partials.length - 1) {
+                    steps.push({
+                        text: `After subtracting, we have ${newRemaining} left. 📊 Can we subtract more groups of ${divisor}? Let's keep going! 🚀`,
+                        action: () => {
+                            const workArea = document.getElementById('workArea');
+                            const remRow = document.createElement('div');
+                            remRow.className = 'remainder-row';
+                            remRow.id = `rem${index}`;
+                            remRow.innerHTML = `<span class="remainder-value">${newRemaining}</span>`;
+                            workArea.appendChild(remRow);
+                            
+                            setTimeout(() => remRow.classList.add('show'), 100);
+                        }
+                    });
+                }
+                
+                currentRemaining = newRemaining;
+            });
+            
+            // Final remainder
+            if (remainder > 0) {
+                steps.push({
+                    text: `We have ${remainder} left, but that's less than ${divisor}, so we stop here! 🛑 This ${remainder} is our remainder. We can't make another complete group of ${divisor}. ⚠️`,
+                    action: () => {
+                        const workArea = document.getElementById('workArea');
+                        const finalRemRow = document.createElement('div');
+                        finalRemRow.className = 'remainder-row';
+                        finalRemRow.innerHTML = `<span style="margin-left: 12px; color: rgba(0,0,0,0.6);">Final Remainder 🡒 </span> <span class="remainder-value">${remainder}</span> `;
+                        workArea.appendChild(finalRemRow);
+                        
+                        setTimeout(() => finalRemRow.classList.add('show'), 100);
+                    }
+                });
+            } else {
+                steps.push({
+                    text: `We have 0 left! 🎉 Perfect! We used up all of ${dividend} with no remainder! ✨`,
+                    action: () => {
+                        const workArea = document.getElementById('workArea');
+                        const finalRemRow = document.createElement('div');
+                        finalRemRow.className = 'remainder-row';
+                        finalRemRow.innerHTML = `<span style="margin-left: 12px; color: #48BB78; font-weight: 500;"> 🎊 No Remainder! 🡒 </span> <span class="remainder-value">0</span> `;
+                        workArea.appendChild(finalRemRow);
+                        
+                        setTimeout(() => finalRemRow.classList.add('show'), 100);
+                    }
+                });
+            }
+            
+            // Add up partial quotients
+            const sum = partials.reduce((acc, p) => acc + p.quotient, 0);
+            const sumText = quotientParts.join(' + ');
+            
+            steps.push({
+                text: `Now comes the fun part! 🎊 We add up all our partial quotients: ${sumText} = ${sum} ➕ This sum is our final quotient!`,
+                action: () => {
+                    const workArea = document.getElementById('workArea');
+                    const sumBox = document.createElement('div');
+                    sumBox.className = 'sum-box';
+                    sumBox.innerHTML = `
+                        <div class="sum-label">Add the partial quotients:</div>
+                        <div class="sum-calculation">${sumText}</div>
+                        <div class="sum-result">${sum}</div>
+                    `;
+                    workArea.appendChild(sumBox);
+                    
+                    setTimeout(() => sumBox.classList.add('show'), 100);
+                }
+            });
+            
+            steps.push({
+                text: `🏆 Amazing job! You did it! ${dividend} ÷ ${divisor} = ${sum}${remainder > 0 ? ` R${remainder}` : ''}! You're a Partial Quotients master! 🌟 Give yourself a big round of applause! 👏`,
+                action: () => {
+                    const finalAnswer = document.getElementById('finalAnswer');
+                    finalAnswer.textContent = `${dividend} ÷ ${divisor} = ${sum}${remainder > 0 ? ` R${remainder}` : ''} 🏆`;
+                    finalAnswer.classList.add('show');
+                }
+            });
+        }
+        
+        function showStep(index) {
+            if (index < 0 || index >= steps.length) return;
+            
+            currentStepIndex = index;
+            
+            const stepElement = document.getElementById('currentStep');
+            const stepContent = document.getElementById('stepContent');
+            const stepNumber = document.getElementById('stepNumber');
+            const stepText = document.getElementById('stepText');
+            const progress = document.getElementById('progress');
+            
+            stepContent.classList.remove('show');
+            stepElement.classList.remove('show');
+            
+            stepNumber.textContent = index + 1;
+            stepText.textContent = steps[index].text;
+            
+            steps[index].action();
+            
+            setTimeout(() => {
+                stepElement.classList.add('show');
+            }, 50);
+            
+            progress.textContent = `Step ${index + 1} of ${steps.length}`;
+            
+            document.getElementById('prevBtn').disabled = index === 0;
+            document.getElementById('nextBtn').disabled = index === steps.length - 1;
+            
+            if (index === steps.length - 1) {
+                document.getElementById('nextBtn').textContent = 'Done ✅';
+            } else {
+                document.getElementById('nextBtn').textContent = 'Next ➡️';
+            }
+        }
+        
+        function nextStep() {
+            if (currentStepIndex < steps.length - 1) {
+                showStep(currentStepIndex + 1);
+            }
+        }
+        
+        function previousStep() {
+            if (currentStepIndex > 0) {
+                showStep(currentStepIndex - 1);
+            }
+        }
+        
+        function reset() {
+            document.getElementById('visualization').classList.remove('show');
+            document.getElementById('finalAnswer').classList.remove('show');
+            document.getElementById('currentStep').classList.remove('show');
+            document.getElementById('workArea').innerHTML = '';
+            
+            currentStepIndex = 0;
+            steps = [];
+            problemData = {};
+        }
+    </script>
+</body>
+</html>
