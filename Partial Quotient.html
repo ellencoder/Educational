@@ -317,12 +317,18 @@
             opacity: 0;
             transition: opacity 0.3s;
         }
-        .remainder-row::before {
+        .remainder-row::after {
             content: '';
             display: inline-block;
-            width: 125px;
-            height: 36px;
-            border-right: 3px solid black;
+            width: 174px;
+            height: 40px;
+            border-left: 3px solid black;
+        }
+        .remainder-row.final-remainder {
+            padding-top: 10px;
+        }
+        .remainder-row.final-remainder::after {
+            display: none;
         }
         
         .remainder-row.show {
@@ -333,6 +339,7 @@
             font-size: 1.5em;
             font-weight: 500;
             color: #764ba2;
+            margin-left: 35px;
         }
         
         .sum-box {
@@ -716,7 +723,8 @@
                         const workArea = document.getElementById('workArea');
                         const finalRemRow = document.createElement('div');
                         finalRemRow.className = 'remainder-row';
-                        finalRemRow.innerHTML = `<span style="margin-left: 12px; color: rgba(0,0,0,0.6);">Final Remainder 🡒 </span> <span class="remainder-value">${remainder}</span> `;
+                        finalRemRow.classList.add('final-remainder');
+                        finalRemRow.innerHTML = `<span class="remainder-value">${remainder}</span> <span style="margin-left: 12px; color: rgba(0,0,0,0.6);"> 🠄 Final Remainder </span> `;
                         workArea.appendChild(finalRemRow);
                         
                         setTimeout(() => finalRemRow.classList.add('show'), 100);
@@ -729,7 +737,8 @@
                         const workArea = document.getElementById('workArea');
                         const finalRemRow = document.createElement('div');
                         finalRemRow.className = 'remainder-row';
-                        finalRemRow.innerHTML = `<span style="margin-left: 12px; color: #48BB78; font-weight: 500;"> 🎊 No Remainder! 🡒 </span> <span class="remainder-value">0</span> `;
+                        finalRemRow.classList.add('final-remainder');
+                        finalRemRow.innerHTML = `<span class="remainder-value">0</span> <span style="margin-left: 12px; color: #48BB78; font-weight: 500;"> 🠄 🎊 No Remainder! </span>`;
                         workArea.appendChild(finalRemRow);
                         
                         setTimeout(() => finalRemRow.classList.add('show'), 100);
