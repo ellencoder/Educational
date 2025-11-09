@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Hello page styles */
+        .hello-page {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Arial', sans-serif;
+            transition: opacity 0.5s ease-out;
+        }
+        
+        .hello-page.fade-out {
+            opacity: 0;
+        }
+        
+        .hello-page h1 {
+            font-size: 6rem;
+            color: white;
+            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            animation: fadeIn 1s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Division Area Model styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #A0C4FF 0%, #BDB2FF 50%, #FFC6FF 100%);
+            min-height: 100vh;
+            padding: 24px;
+            color: rgba(0, 0, 0, 0.87);
+        }
+        
+        .division-page {
+            display: none;
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        .division-page.show {
+            display: block;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .main-card {
+            background: #FFFFFC;
+            border-radius: 8px;
+            padding: 32px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1), 0 8px 16px rgba(0,0,0,0.1);
+            margin-bottom: 24px;
+        }
+        
+        h1 {
+            color: black;
+            margin-bottom: 8px;
+            font-size: 2.5em;
+            font-weight: 500;
+            letter-spacing: -0.5px;
+        }
+        
+        .subtitle {
+            color: rgba(0, 0, 0, 0.6);
+            margin-bottom: 32px;
+            font-size: 1.1em;
+            font-weight: 400;
+        }
+        
+        .section {
+            background: #FFFFFC;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.12), 0 16px 24px rgba(0,0,0,0.14);
+        }
+        
+        .instruction {
+            background: #FDFFB6;
+            padding: 16px;
+            border-radius: 4px;
+            margin-bottom: 24px;
+            border-left: 4px solid #FFD6A5;
+            font-size: 1em;
+            line-height: 1.6;
+            color: rgba(0, 0, 0, 0.87);
+        }
+        
+        .problem-setup {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+            justify-content: center;
+            margin: 24px 0;
+            flex-wrap: wrap;
+        }
+        
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .input-group label {
+            font-weight: 500;
+            margin-bottom: 8px;
+            font-size: 0.875em;
+            color: #BDB2FF;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .input-group input {
+            width: 120px;
+            padding: 12px;
+            font-size: 1.5em;
+            border: none;
+            border-bottom: 2px solid #BDB2FF;
+            background: transparent;
+            text-align: center;
+            font-family: 'Roboto', sans-serif;
+            transition: border-color 0.2s;
+        }
+        
+        .input-group input:focus {
+            outline: none;
+            border-bottom-color: #A0C4FF;
+        }
+        
+        .big-division {
+            font-size: 2em;
+            font-weight: 300;
+            color: #BDB2FF;
+        }
+        
+        button {
+            background: #BDB2FF;
+            color: rgba(0, 0, 0, 0.87);
+            border: none;
+            padding: 12px 24px;
+            font-size: 1em;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            margin: 8px;
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        button:hover {
+            background: #A0C4FF;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        
+        button:active {
+            box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+            transform: translateY(1px);
+        }
+        
+        button:disabled {
+            background: rgba(0, 0, 0, 0.12);
+            color: rgba(0, 0, 0, 0.26);
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        
+        .preset-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+        
+        .preset-btn {
+            background: #9BF6FF;
+            color: rgba(0, 0, 0, 0.87);
+        }
+        
+        .preset-btn:hover {
+            background: #CAFFBF;
+        }
+        
+        .area-model-container {
+            margin: 32px 0;
+            display: none;
+        }
+        
+        .area-model-container.show {
+            display: block;
+            animation: fadeInModel 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        @keyframes fadeInModel {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .model-wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 24px;
+        }
+        
+        .model-container-wrapper {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+        
+        .problem-display {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-right: 24px;
+        }
+        
+        .model-container {
+            display: inline-block;
+        }
+        
+        .top-labels {
+            display: flex;
+        }
+        
+        .top-label {
+            text-align: center;
+            font-weight: 500;
+            font-size: 1.3em;
+            color: #000;
+            padding: 8px;
+            background: #FFADAD;
+            width: 180px;
+            opacity: 0;
+            transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 4px 4px 0 0;
+            margin-right: 16px;
+        }
+        
+        .top-label.show {
+            opacity: 1;
+        }
+        
+        .model-row {
+            display: flex;
+        }
+        
+        .rectangle-model {
+            border: 2px solid rgba(0, 0, 0, 0.12);
+            background: #FFFFFC;
+            display: inline-block;
+            border-radius: 4px;
+        }
+        
+        .left-side {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .dividend-label {
+            font-weight: 500;
+            font-size: 1.5em;
+            color: #BDB2FF;
+            padding: 12px;
+        }
+        
+        .division-symbol {
+            font-weight: 300;
+            font-size: 1.8em;
+            color: #BDB2FF;
+        }
+        
+        .left-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 500;
+            font-size: 1.3em;
+            color: #A0C4FF;
+            padding: 12px;
+            writing-mode: horizontal-tb;
+            min-width: 60px;
+        }
+        
+        .boxes-container {
+            display: flex;
+        }
+        
+        .box {
+            border: 2px solid rgba(0, 0, 0, 0.2);
+            padding: 24px;
+            margin: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            font-weight: 500;
+            width: 180px;
+            height: 120px;
+            background: #FFFFFC;
+            color: transparent;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 8px;
+        }
+        
+        .box.show {
+            color: rgba(0, 0, 0, 0.87);
+            background: #FDFFB6;
+        }
+        
+        .bottom-labels {
+            display: flex;
+        }
+        
+        .bottom-label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            font-weight: 500;
+            font-size: 1.1em;
+            color: #000;
+            padding: 8px;
+            background: #FFC6FF;
+            width: 180px;
+            opacity: 0;
+            transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 0 0 4px 4px;
+            margin-right: 16px;
+        }
+        
+        .bottom-label.show {
+            opacity: 1;
+        }
+        
+        .steps-container {
+            margin-top: 32px;
+        }
+        
+        .current-step {
+            margin: 24px 0;
+            padding: 24px;
+            background: #FFFFFC;
+            border-radius: 4px;
+            border-left: 4px solid #BDB2FF;
+            min-height: 100px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+        }
+        
+        .current-step .step-content {
+            opacity: 0;
+            transform: translateX(-8px);
+            transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .current-step.show .step-content {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #BDB2FF;
+            color: rgba(0, 0, 0, 0.87);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            margin-right: 12px;
+            font-weight: 500;
+            font-size: 1em;
+        }
+        
+        .step-text {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: rgba(0, 0, 0, 0.87);
+        }
+        
+        .navigation-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 24px;
+        }
+        
+        .nav-btn {
+            padding: 12px 24px;
+            font-size: 1em;
+        }
+        
+        .final-answer {
+            background: #CAFFBF;
+            padding: 24px;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 1.8em;
+            font-weight: 500;
+            color: rgba(0, 0, 0, 0.87);
+            margin-top: 24px;
+            border-left: 4px solid #9BF6FF;
+            display: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .final-answer.show {
+            display: block;
+            animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .sum-display {
+            background: #FFD6A5;
+            padding: 16px;
+            border-radius: 4px;
+            border: 2px dashed #FFADAD;
+            font-size: 1.3em;
+            font-weight: 500;
+            color: rgba(0, 0, 0, 0.87);
+            text-align: center;
+            margin-top: 12px;
+            opacity: 0;
+            transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .sum-display.show {
+            opacity: 1;
+        }
+        
+        .progress-indicator {
+            text-align: center;
+            color: #BDB2FF;
+            font-weight: 500;
+            margin-top: 16px;
+            font-size: 0.875em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .subtraction-arrow {
+            position: absolute;
+            margin-top: -80px;
+            z-index: 10;
+            animation: fadeInArrow 0.5s ease-out;
+        }
+        
+        @keyframes fadeInArrow {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .arrow-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .arrow-line {
+            height: 5px;
+            margin-top: 15px;
+            background: #BDB2FF;
+        }
+        
+        .arrow-head {
+            font-size: 1.5em;
+            color: #BDB2FF;
+            line-height: 0.5;
+            margin-top: -5px;
+            padding-bottom: 5px;
+        }
+        
+        .arrow-text {
+            background: #FDFFB6;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-weight: 500;
+            color: rgba(0, 0, 0, 0.87);
+            font-size: 0.9em;
+            margin-top: 5px;
+            border: 2px solid #BDB2FF;
+            white-space: nowrap;
+        }
+        
+        h2 {
+            color: #BDB2FF;
+            color: black;
+            font-weight: 500;
+            font-size: 1.5em;
+            margin-bottom: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="hello-page" id="helloPage">
+        <h1>Hello</h1>
+    </div>
+
+    <div class="division-page" id="divisionPage">
+        <div class="container">
+            <div class="main-card">
+                <h1>Division Area Model</h1>
+                <p class="subtitle">Break big numbers into smaller parts to make division easier</p>
+                
+                <div class="instruction">
+                    <strong>What is the Area Model?</strong><br>
+                    The area model helps us divide by breaking the big number (dividend) into smaller, easier parts. We draw a rectangle and split it into sections that are easy to divide!
+                </div>
+                
+                <div class="problem-setup">
+                    <div class="input-group">
+                        <label>Dividend</label>
+                        <input type="number" id="dividend" value="336" min="10" max="9999">
+                    </div>
+                    <div class="big-division">÷</div>
+                    <div class="input-group">
+                        <label>Divisor</label>
+                        <input type="number" id="divisor" value="3" min="2" max="12">
+                    </div>
+                </div>
+                
+                <div style="text-align: center;">
+                    <button onclick="startProblem()">Start Learning</button>
+                    <button onclick="reset()" style="background: #FFADAD;">Reset</button>
+                </div>
+                
+                <div class="preset-buttons">
+                    <button class="preset-btn" onclick="loadProblem(136, 8)">136 ÷ 8</button>
+                    <button class="preset-btn" onclick="loadProblem(156, 12)">156 ÷ 12</button>
+                    <button class="preset-btn" onclick="loadProblem(84, 6)">84 ÷ 6</button>
+                    <button class="preset-btn" onclick="loadProblem(96, 4)">96 ÷ 4</button>
+                </div>
+            </div>
+            
+            <div id="visualization" class="area-model-container">
+                <div class="section">
+                    <h2>Let's Build the Area Model</h2>
+                    
+                    <div class="model-wrapper">
+                        <div class="model-container-wrapper">
+                            <div class="problem-display">
+                                <div class="dividend-label" id="dividendLabel"></div>
+                                <div class="division-symbol">÷</div>
+                            </div>
+                            <div class="model-container">
+                                <div class="top-labels" id="topLabels"></div>
+                                <div class="rectangle-model">
+                                    <div class="model-row">
+                                        <div class="left-side">
+                                            <div class="left-label" id="leftLabel"></div>
+                                        </div>
+                                        <div class="boxes-container" id="boxes"></div>
+                                    </div>
+                                </div>
+                                <div class="bottom-labels" id="bottomLabels"></div>
+                            </div>
+                        </div>
+                        <div class="answer-wrapper">
+                            <div class="sum-display" id="sumDisplay"></div>
+                            <div class="final-answer" id="finalAnswer"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="steps-container">
+                        <div class="current-step show" id="currentStep">
+                            <div class="step-content" id="stepContent">
+                                <span class="step-number" id="stepNumber">1</span>
+                                <span class="step-text" id="stepText"></span>
+                            </div>
+                        </div>
+                        
+                        <div class="navigation-buttons">
+                            <button class="nav-btn" id="prevBtn" onclick="previousStep()" disabled>Previous</button>
+                            <button class="nav-btn" id="nextBtn" onclick="nextStep()">Next</button>
+                        </div>
+                        
+                        <div class="progress-indicator" id="progress"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Transition from hello page to division page after 3 seconds
+        setTimeout(() => {
+            document.getElementById('helloPage').classList.add('fade-out');
+            setTimeout(() => {
+                document.getElementById('helloPage').style.display = 'none';
+                document.getElementById('divisionPage').classList.add('show');
+            }, 500);
+        }, 3000);
+
+        let currentStepIndex = 0;
+        let steps = [];
+        let problemData = {};
+        
+        function loadProblem(dividend, divisor) {
+            document.getElementById('dividend').value = dividend;
+            document.getElementById('divisor').value = divisor;
+            startProblem();
+        }
+        
+        function breakIntoPlaceValues(dividend, divisor) {
+            const parts = [];
+            let remaining = dividend;
+            
+            let highestPlace = 1;
+            let temp = dividend;
+            while (temp >= 10) {
+                highestPlace *= 10;
+                temp = Math.floor(temp / 10);
+            }
+            
+            let currentPlace = highestPlace;
+            
+            while (currentPlace >= 1 && remaining > 0) {
+                if (remaining >= divisor) {
+                    let bestMultiplier = 0;
+                    let bestValue = 0;
+                    
+                    for (let mult = 1; mult <= 9; mult++) {
+                        const testQuotient = mult * currentPlace;
+                        const testValue = testQuotient * divisor;
+                        
+                        if (testValue <= remaining) {
+                            bestMultiplier = testQuotient;
+                            bestValue = testValue;
+                        } else {
+                            break;
+                        }
+                    }
+                    
+                    if (bestMultiplier > 0) {
+                        parts.push({
+                            value: bestValue,
+                            multiplier: bestMultiplier,
+                            placeValue: bestValue
+                        });
+                        remaining -= bestValue;
+                    }
+                }
+                
+                currentPlace = Math.floor(currentPlace / 10);
+            }
+            
+            if (remaining >= divisor) {
+                const multiplier = Math.floor(remaining / divisor);
+                if (multiplier > 0) {
+                    parts.push({
+                        value: multiplier * divisor,
+                        multiplier: multiplier,
+                        placeValue: remaining
+                    });
+                    remaining -= multiplier * divisor;
+                }
+            }
+            
+            return { parts, remainder: remaining };
+        }
+        
+        function startProblem() {
+            const dividendInput = document.getElementById('dividend').value;
+            const divisorInput = document.getElementById('divisor').value;
+            
+            const dividend = parseInt(dividendInput);
+            const divisor = parseInt(divisorInput);
+            
+            if (isNaN(dividend) || isNaN(divisor) || dividend <= 0 || divisor <= 0) {
+                alert('Please enter valid positive numbers!');
+                return;
+            }
+            
+            if (divisor === 0) {
+                alert('Cannot divide by zero!');
+                return;
+            }
+            
+            if (dividend < divisor) {
+                alert('The dividend should be larger than the divisor for this lesson!');
+                return;
+            }
+            
+            const { parts, remainder } = breakIntoPlaceValues(dividend, divisor);
+            
+            problemData = { dividend, divisor, parts, remainder };
+            currentStepIndex = 0;
+            
+            document.getElementById('finalAnswer').classList.remove('show');
+            document.getElementById('sumDisplay').classList.remove('show');
+            document.querySelectorAll('.top-label, .box, .bottom-label').forEach(el => {
+                el.classList.remove('show');
+            });
+            
+            buildModel();
+            createSteps();
+            
+            document.getElementById('visualization').classList.add('show');
+            showStep(0);
+        }
+        
+        function buildModel() {
+            const { divisor, parts, dividend } = problemData;
+            
+            const topLabels = document.getElementById('topLabels');
+            const boxes = document.getElementById('boxes');
+            const bottomLabels = document.getElementById('bottomLabels');
+            const leftLabel = document.getElementById('leftLabel');
+            const dividendLabel = document.getElementById('dividendLabel');
+            
+            topLabels.innerHTML = '';
+            boxes.innerHTML = '';
+            bottomLabels.innerHTML = '';
+            leftLabel.textContent = divisor;
+            dividendLabel.textContent = dividend;
+            
+            setTimeout(() => {
+                const leftLabel = document.querySelector('.left-label');
+                if (leftLabel) {
+                    const leftLabelWidth = leftLabel.offsetWidth;
+                    topLabels.style.marginLeft = `${leftLabelWidth + 10}px`;
+                    bottomLabels.style.marginLeft = `${leftLabelWidth + 10}px`;
+                }
+            }, 0);
+            
+            let runningTotal = 0;
+            
+            parts.forEach((part, index) => {
+                const topLabel = document.createElement('div');
+                topLabel.className = 'top-label';
+                topLabel.id = `topLabel${index}`;
+                topLabel.textContent = part.multiplier;
+                topLabels.appendChild(topLabel);
+                
+                const box = document.createElement('div');
+                box.className = 'box';
+                box.id = `box${index}`;
+                box.textContent = part.value;
+                boxes.appendChild(box);
+                
+                runningTotal += part.value;
+                const remaining = dividend - runningTotal;
+                
+                const bottomLabel = document.createElement('div');
+                bottomLabel.className = 'bottom-label';
+                bottomLabel.id = `bottomLabel${index}`;
+                bottomLabel.textContent = remaining === 0 ? '0' : remaining;
+                bottomLabels.appendChild(bottomLabel);
+            });
+        }
+        
+        function createSteps() {
+            const { dividend, divisor, parts, remainder } = problemData;
+            steps = [];
+            
+            steps.push({
+                text: `Let's solve ${dividend} ÷ ${divisor}! First, we draw our rectangle with ${divisor} on the left side. ${divisor} is our divisor. ${dividend} is the dividend.`,
+                action: () => {}
+            });
+            
+            steps.push({
+                text: `Division and Multiplication are inverse operations, so now we start guessing what rounded number we should multiply by the divisor (${divisor}) to get super close to the dividend (${dividend}). Your guesses will get better soon enough.`,
+                action: () => {}
+            });
+            
+            let runningTotal = 0;
+            parts.forEach((part, index) => {
+                runningTotal += part.value;
+                const remaining = dividend - runningTotal;
+                
+                let zeroCount = 0;
+                let placeValueJump = 1;
+                let tempMultiplier = part.multiplier;
+                
+                while (tempMultiplier >= 10) {
+                    zeroCount++;
+                    placeValueJump *= 10;
+                    tempMultiplier = Math.floor(tempMultiplier / 10);
+                }
+                
+                const startingAmount = index === 0 ? dividend : dividend - (runningTotal - part.value);
+                const nextMultiplier = part.multiplier + placeValueJump;
+                const nextProduct = divisor * nextMultiplier;
+                
+                let guessText;
+                if (zeroCount === 0) {
+                    guessText = `Let's find the number with "${divisor}" for 0 zeroes:`;
+                } else if (zeroCount === 1) {
+                    guessText = `Let's find the number with "${divisor}" for 1 zero:`;
+                } else {
+                    guessText = `Let's find the number with "${divisor}" for ${zeroCount} zeroes:`;
+                }
+                
+                const tooSmallMultiplier = part.multiplier - placeValueJump;
+                const tooSmallProduct = divisor * tooSmallMultiplier;
+                const tooBigMultiplier = nextMultiplier;
+                const tooBigProduct = nextProduct;
+                
+                if (tooSmallMultiplier > 0) {
+                    steps.push({
+                        text: `Let's try ${tooSmallMultiplier}... ${divisor} × ${tooSmallMultiplier} = ${tooSmallProduct}. Hmm, that works, but we still have ${startingAmount - tooSmallProduct} left! Maybe we can get a better match. Let's try a bigger guess!`,
+                        action: () => {}
+                    });
+                }
+                
+                steps.push({
+                    text: `Let's try ${tooBigMultiplier}... ${divisor} × ${tooBigMultiplier} = ${tooBigProduct}. Oh no! It looks like it is too much, we don't have that much to divide. ${startingAmount} - ${tooBigProduct} would give us a negative number! This guess is too big!`,
+                    action: () => {}
+                });
+                
+                let explanationText = `What about ${part.multiplier}? This seems a great match! Let's put ${part.multiplier} on top of our rectangle.`;
+                
+                steps.push({
+                    text: explanationText,
+                    action: () => {
+                        document.getElementById(`topLabel${index}`).classList.add('show');
+                    }
+                });
+                
+                steps.push({
+                    text: `Now let's calculate: ${divisor} × ${part.multiplier} = ${part.value}. We write ${part.value} inside the box.`,
+                    action: () => {
+                        document.getElementById(`box${index}`).classList.add('show');
+                    }
+                });
+                
+                steps.push({
+                    text: `After using ${part.value}, we have ${remaining} left over from our original amount.`,
+                    action: () => {
+                        document.getElementById(`bottomLabel${index}`).classList.add('show');
+                        
+                        // Create arrow showing subtraction
+                        const arrow = document.createElement('div');
+                        arrow.className = 'subtraction-arrow';
+                        arrow.id = `arrow${index}`;
+                        arrow.innerHTML = `
+                            <div class="arrow-content">
+                                <div class="arrow-line"></div>
+                                <div class="arrow-head">↓</div>
+                                <div class="arrow-text">${startingAmount} - ${part.value} = ${remaining}</div>
+                            </div>
+                        `;
+                        
+                        const bottomLabel = document.getElementById(`bottomLabel${index}`);
+                        if (bottomLabel && !document.getElementById(`arrow${index}`)) {
+                            bottomLabel.appendChild(arrow);
+                        }
+                    }
+                });
+            });
+            
+            const sum = parts.reduce((acc, part) => acc + part.multiplier, 0);
+            const multipliersText = parts.map(p => p.multiplier).join(' + ');
+            steps.push({
+                text: `Great! Now we add all the numbers on top: ${multipliersText} = ${sum}`,
+                action: () => {
+                    const sumDisplay = document.getElementById('sumDisplay');
+                    sumDisplay.textContent = `${multipliersText} = ${sum}`;
+                    sumDisplay.classList.add('show');
+                }
+            });
+            
+            if (remainder > 0) {
+                steps.push({
+                    text: `We have ${remainder} left over - that's our REMAINDER! We stop here because ${remainder} is smaller than ${divisor}, so we can't make another complete group. Like having ${remainder} cookie${remainder > 1 ? 's' : ''} for ${divisor} friends - not enough for everyone!`,
+                    action: () => {}
+                });
+            }
+            
+            steps.push({
+                text: `That's it! We found our answer!`,
+                action: () => {
+                    const finalAnswer = document.getElementById('finalAnswer');
+                    finalAnswer.textContent = `${dividend} ÷ ${divisor} = ${sum}${remainder > 0 ? ` R${remainder}` : ''}`;
+                    finalAnswer.classList.add('show');
+                }
+            });
+        }
+        
+        function showStep(index) {
+            if (index < 0 || index >= steps.length) return;
+            
+            currentStepIndex = index;
+            
+            const stepElement = document.getElementById('currentStep');
+            const stepContent = document.getElementById('stepContent');
+            const stepNumber = document.getElementById('stepNumber');
+            const stepText = document.getElementById('stepText');
+            const progress = document.getElementById('progress');
+            
+            stepContent.classList.remove('show');
+            stepElement.classList.remove('show');
+            
+            stepNumber.textContent = index + 1;
+            stepText.textContent = steps[index].text;
+            
+            steps[index].action();
+            
+            setTimeout(() => {
+                stepElement.classList.add('show');
+            }, 50);
+            
+            progress.textContent = `Step ${index + 1} of ${steps.length}`;
+            
+            document.getElementById('prevBtn').disabled = index === 0;
+            document.getElementById('nextBtn').disabled = index === steps.length - 1;
+            
+            if (index === steps.length - 1) {
+                document.getElementById('nextBtn').textContent = 'Done';
+            } else {
+                document.getElementById('nextBtn').textContent = 'Next';
+            }
+        }
+        
+        function nextStep() {
+            if (currentStepIndex < steps.length - 1) {
+                showStep(currentStepIndex + 1);
+            }
+        }
+        
+        function previousStep() {
+            if (currentStepIndex > 0) {
+                showStep(currentStepIndex - 1);
+            }
+        }
+        
+        function reset() {
+            document.getElementById('visualization').classList.remove('show');
+            document.getElementById('finalAnswer').classList.remove('show');
+            document.getElementById('currentStep').classList.remove('show');
+            document.getElementById('sumDisplay').classList.remove('show');
+            
+            document.querySelectorAll('.top-label, .box, .bottom-label').forEach(el => {
+                el.classList.remove('show');
+            });
+            
+            // Remove any arrows
+            document.querySelectorAll('.subtraction-arrow').forEach(arrow => {
+                arrow.remove();
+            });
+            
+            currentStepIndex = 0;
+            steps = [];
+            problemData = {};
+        }
+    </script>
+</body>
+</html>
